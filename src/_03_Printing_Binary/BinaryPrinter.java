@@ -21,51 +21,61 @@ public class BinaryPrinter {
 		
 		//Use this method to print the remaining 7 bits of b
 		// 01010101
-		System.out.println("");
 		for (int i = 7; i >=0; i = i - 1) {
 			byte d = (byte) (b>>i);
 			System.out.print(d&1);
 		}
+		System.out.println("");
 	}
 	
-	public void printShortBinary(short s) {
+	public static void printShortBinary(short s) {
 		// Create 2 byte variables
-		byte a;
-		byte b;
+		byte a = (byte) (s&255);
+		byte b = (byte) (s>>8);
 		// Use bit shifting and masking (&) to save the first
 		// 8 bits of s in one byte, and the second 8 bits of
 		// s in the other byte
-		for (int i = 15; i >=8; i = i - 1) {
-			byte d = (byte) (s>>i);
-			System.out.print(d&1);
-		}
-		for (int i = 7; i >=0; i = i - 1) {
-			byte d = (byte) (s>>i);
-			System.out.print(d&1);
-		}
-		
+		printByteBinary(b);
+		printByteBinary(a);
+
 		// Call printByteBinary twice using the two bytes
 		// Make sure they are in the correct order
 	}
 	
-	public void printIntBinary(int i) {
+	public static void printIntBinary(int j) {
 		// Create 2 short variables
-		
+		short a = (short) (j&65535);
+		short b = (short) (j>>16);
 		// Use bit shifting and masking (&) to save the first
 		// 16 bits of i in one short, and the second 16 bits of
 		// i in the other short
+		printShortBinary(b);
+		printShortBinary(a);
 		
 		// Call printShortBinary twice using the two short variables
 		// Make sure they are in the correct order
 	}
 	
-	public void printLongBinary(long l) {
+	public static void printLongBinary(long l) {
 		// Use the same method as before to complete this method
+		int a = (int) ( l&Integer.MAX_VALUE );
+		int b = (int) (l>>32);
+		printIntBinary(b);
+		printIntBinary(a);
 	}
 	
 	public static void main(String[] args) {
 		// Test your methods here
 		byte joe = (byte) 0b01010101;
 		printByteBinary(joe);
+		System.out.println("");
+		short fred = (short) 0b1110101001010111;
+		printShortBinary(fred);
+		System.out.println("");
+		int bob = (int) 0b11101010010101111110101001010001;
+		printIntBinary(bob);
+		System.out.println("");
+		long mark = (long) 0b1111101001010111111010100101000111101010010101111110101001000001l;
+		printLongBinary(mark);
 	}
 }
