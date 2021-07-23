@@ -55,16 +55,52 @@ public class Base64Decoder {
 		byte c2 = convertBase64Char(s.charAt(1));
 		byte c3 = convertBase64Char(s.charAt(2));
 		byte c4 = convertBase64Char(s.charAt(3));
+		printByteBinary(c1);
+		printByteBinary(c2);
+		printByteBinary(c3);
+		printByteBinary(c4);
+		System.out.println("1");
 		
 		bytes[0] = (byte) ((c1<<2) | (c2>>4));
-		bytes[1] = (c2>>4) | (c3>>4);
-		bytes[2] = (c3)
+		// 11111122 2222003333 33444444
+		printByteBinary(bytes[0]);
+		bytes[1] = (byte) ((c2<<4) | (c3>>2));
+		printByteBinary(bytes[1]);
+		bytes[2] = (byte) ((c3<<6) | (c4));
+		printByteBinary(bytes[2]);
+		System.out.println("2");
 		return bytes;
+	}
+	
+	public static void printByteBinary(byte b) {
+		for (int i = 7; i >=0; i = i - 1) {
+			byte d = (byte) (b>>i);
+			System.out.print(d&1);
+		}
+		System.out.println("");
 	}
 	
 	//3. Complete this method so that it takes in a string of any length
 	//   and returns the full byte array of the decoded base64 characters.
 	public static byte[] base64StringToByteArray(String file) {
-		return null;
+		int len = (file.length() / 4);
+		byte[] allBytes = new byte[len * 3];
+		
+		for (int i = 0; i < len; i++) {
+			
+			char ch1 = file.charAt(i * 4);
+			char ch2 = file.charAt(i * 4 + 1);
+			char ch3 = file.charAt(i * 4 + 2);
+			char ch4 = file.charAt(i * 4 + 3);
+			String chars = Character.toString(ch1) + Character.toString(ch2) + Character.toString(ch3) + Character.toString(ch4);
+			
+			byte[] tempBytes = convert4CharsTo24Bits(chars);
+			allBytes[i * 3] = tempBytes[0];
+			allBytes[i * 3 + 1] = tempBytes[1];
+			allBytes[i * 3 + 2] = tempBytes[2];
+			
+		}
+		
+		return allBytes;
 	}
 }
